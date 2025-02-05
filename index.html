@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lilo Labs</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #1f2121;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        h1 {
+            color: #d5e1f4;
+            margin-bottom: 1.5rem;
+            font-size: 5rem;
+        }
+
+        h2 {
+            color: #babfc5;
+            margin-bottom: 1.5rem;
+            font-size: 2.5rem;
+            font-style: italic;
+        }
+
+        p {
+            color: #cbd0d6;
+            font-size: 1.5rem;
+            padding: 0px 0px 0px 0px;
+        }
+
+        .container {
+            background-color: #434349;
+            padding: 1rem 3rem 3rem 3rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 80vw; /* Changed from fixed 1600px to 80% of viewport width */
+            min-width: 400px; /* Added minimum width */
+            margin: 2rem;
+            width: 100%; /* Added to ensure container takes available space */
+        }
+
+        .coming-soon {
+            color: #86798d;
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .coming-soon-text {
+            color: #86798d;
+            font-size: 1.5rem;
+            font-style: italic;
+        }
+
+        .screenshots {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+            min-height: 400px;
+            background-color: #a592ae;
+            padding: 1rem;
+            border-radius: 10px;
+        }
+
+        .screenshot-placeholder {
+            border: 2px dashed #cbd5e0;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #a0aec0;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Lilo Labs</h1>
+        <div class="coming-soon">
+            <h2>Become Fluent</h2>
+            <p class="coming-soon-text">Coming soon: </p>
+            <p>TextTutor for iOS</p>
+        </div>
+        <div class="screenshots">
+            <img src="Screenshot 0.png" alt="Screenshot" class="screenshot" style="border-radius: 15px; width: 100%; height: 100%; object-fit: cover;">
+            <img src="Screenshot 1.png" alt="Screenshot" class="screenshot" style="border-radius: 15px; width: 100%; height: 100%; object-fit: cover;">
+            <img src="Screenshot 2.png" alt="Screenshot" class="screenshot" style="border-radius: 15px; width: 100%; height: 100%; object-fit: cover;">
+        </div>
+    </div>
+</body>
+</html>
