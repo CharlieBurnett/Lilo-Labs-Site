@@ -12,7 +12,7 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lilo - Mobile App Development</title>
+    <title>News - Lilo</title>
     <style>
         * {
             margin: 0;
@@ -94,80 +94,74 @@
             transition: color 0.3s;
         }
 
-        nav a:hover {
+        nav a:hover,
+        nav a.active {
             color: var(--royal-purple);
         }
 
-        /* Hero Section */
-        .hero {
+        /* Page Header */
+        .page-header {
             margin-top: 80px;
-            padding: 8rem 2rem;
+            padding: 4rem 2rem;
             background: linear-gradient(135deg, var(--gray-50) 0%, var(--white) 100%);
             text-align: center;
-            min-height: calc(100vh - 80px);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
         }
 
-        .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
             color: var(--gray-900);
-            margin-bottom: 1.5rem;
-            line-height: 1.1;
+            margin-bottom: 0.5rem;
         }
 
-        .hero .accent {
-            color: var(--royal-purple);
-        }
-
-        .hero p {
-            font-size: 1.25rem;
+        .page-header p {
+            font-size: 1.125rem;
             color: var(--gray-600);
-            max-width: 600px;
-            margin: 0 auto 3rem;
         }
 
-        /* CTA Buttons */
-        .cta-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
+        /* Section Containers */
+        section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem 5rem;
         }
 
-        .btn {
-            display: inline-block;
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s;
+        /* News Section */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
         }
 
-        .btn-primary {
-            background-color: var(--royal-purple);
-            color: var(--white);
+        .news-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
-        .btn-primary:hover {
-            background-color: var(--purple-dark);
-            transform: translateY(-2px);
+        .news-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
         }
 
-        .btn-secondary {
-            background-color: var(--white);
-            color: var(--gray-700);
-            border: 2px solid var(--gray-300);
-        }
-
-        .btn-secondary:hover {
-            border-color: var(--royal-purple);
+        .news-date {
             color: var(--royal-purple);
-            transform: translateY(-2px);
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .news-card h3 {
+            font-size: 1.25rem;
+            color: var(--gray-900);
+            margin-bottom: 0.75rem;
+        }
+
+        .news-card p {
+            color: var(--gray-600);
+            font-size: 1rem;
         }
 
         /* Footer */
@@ -189,27 +183,12 @@
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .hero {
-                padding: 4rem 2rem;
+            .page-header h1 {
+                font-size: 2rem;
             }
 
             nav ul {
                 display: none;
-            }
-
-            .cta-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .btn {
-                width: 100%;
-                max-width: 280px;
-                text-align: center;
             }
         }
     </style>
@@ -224,19 +203,37 @@
             <ul>
                 <li><a href="apps.html">Apps</a></li>
                 <li><a href="about.html">About</a></li>
-                <li><a href="news.html">News</a></li>
+                <li><a href="news.html" class="active">News</a></li>
                 <li><a href="contact.html">Contact</a></li>
             </ul>
         </nav>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <h1>Building Apps That <span class="accent">Matter</span></h1>
-        <p>We create mobile applications that help people learn, grow, and connect with the world around them.</p>
-        <div class="cta-buttons">
-            <a href="apps.html" class="btn btn-primary">View Our Apps</a>
-            <a href="about.html" class="btn btn-secondary">Learn More</a>
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1>Latest Updates</h1>
+        <p>What we're working on</p>
+    </div>
+
+    <!-- News Section -->
+    <section id="news">
+        <div class="news-grid">
+            <div class="news-card">
+                <div class="news-date">February 2025</div>
+                <h3>TextTutor is live!</h3>
+                <p>We've launched TextTutor, our first app! text faster in the language you're learning.</p>
+                <p>Download it now on the iOS App Store!<a href="https://apps.apple.com/us/app/texttutor/id6741771741">TextTutor</a></p>
+            </div>
+            <div class="news-card">
+                <div class="news-date">January 2026</div>
+                <h3>New Website Launch</h3>
+                <p>Welcome to our new site! We've redesigned everything to better showcase our work and share our journey with you.</p>
+            </div>
+            <div class="news-card">
+                <div class="news-date">Q1 2026</div>
+                <h3>Looking Ahead</h3>
+                <p>We have exciting plans for new apps and features throughout 2026. Follow us to stay updated on our progress.</p>
+            </div>
         </div>
     </section>
 
