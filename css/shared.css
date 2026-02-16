@@ -1,0 +1,135 @@
+body {
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    color: var(--gray-800);
+    background-color: var(--white);
+}
+
+/* Header / Navigation */
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--gray-200);
+    z-index: 1000;
+    padding: 1rem 0;
+}
+
+nav {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    text-decoration: none;
+}
+
+.logo-nav img {
+    height: 32px;
+    width: auto;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+}
+
+nav a {
+    color: var(--gray-600);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+nav a:hover,
+nav a.active {
+    color: var(--royal-purple);
+}
+
+/* Page Header */
+.page-header {
+    margin-top: 80px;
+    padding: 4rem 2rem;
+    background: linear-gradient(135deg, var(--gray-50) 0%, var(--white) 100%);
+    text-align: center;
+}
+
+.page-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: 0.5rem;
+}
+
+.page-header p {
+    font-size: 1.125rem;
+    color: var(--gray-600);
+}
+
+/* Section Containers */
+section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem 2rem 5rem;
+}
+
+.about-content,
+.contact-content {
+    margin: 0 auto;
+    text-align: center;
+}
+
+.about-content {
+    max-width: 800px;
+}
+
+.contact-content {
+    max-width: 600px;
+}
+
+/* Card base (app-card, news-card) */
+.app-card,
+.news-card {
+    background: var(--white);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Footer */
+footer {
+    background-color: var(--gray-900);
+    color: var(--gray-400);
+    padding: 2rem;
+    text-align: center;
+}
+
+footer a {
+    color: var(--gray-300);
+    text-decoration: none;
+}
+
+footer a:hover {
+    color: var(--white);
+}
+
+@media (max-width: 768px) {
+    .page-header h1 {
+        font-size: 2rem;
+    }
+
+    nav ul {
+        display: none;
+    }
+}

@@ -1,0 +1,32 @@
+/* Contact Section */
+.contact-content > p {
+    font-size: 1.125rem;
+    color: var(--gray-700);
+    margin-bottom: 2rem;
+}
+
+.contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.contact-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--gray-700);
+    text-decoration: none;
+    font-size: 1.125rem;
+    transition: color 0.3s;
+}
+
+.contact-link:hover {
+    color: var(--royal-purple);
+}
+
+@media (max-width: 768px) {
+    .contact-links {
+        flex-direction: column;
+    }
+}

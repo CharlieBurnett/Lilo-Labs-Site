@@ -13,185 +13,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About - Lilo</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --royal-purple: #6B46C1;
-            --purple-light: #8B5CF6;
-            --purple-dark: #5B21B6;
-            --gray-50: #fafafa;
-            --gray-100: #f5f5f5;
-            --gray-200: #e5e5e5;
-            --gray-300: #d4d4d4;
-            --gray-400: #a3a3a3;
-            --gray-500: #737373;
-            --gray-600: #525252;
-            --gray-700: #404040;
-            --gray-800: #262626;
-            --gray-900: #171717;
-            --white: #ffffff;
-            --black: #0a0a0a;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.6;
-            color: var(--gray-800);
-            background-color: var(--white);
-        }
-
-        /* Header / Navigation */
-        header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background-color: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--gray-200);
-            z-index: 1000;
-            padding: 1rem 0;
-        }
-
-        nav {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo-nav {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--gray-900);
-            text-decoration: none;
-        }
-
-        .logo-nav img {
-            height: 32px;
-            width: auto;
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-
-        nav a {
-            color: var(--gray-600);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        nav a:hover,
-        nav a.active {
-            color: var(--royal-purple);
-        }
-
-        /* Page Header */
-        .page-header {
-            margin-top: 80px;
-            padding: 4rem 2rem;
-            background: linear-gradient(135deg, var(--gray-50) 0%, var(--white) 100%);
-            text-align: center;
-        }
-
-        .page-header h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--gray-900);
-            margin-bottom: 0.5rem;
-        }
-
-        .page-header p {
-            font-size: 1.125rem;
-            color: var(--gray-600);
-        }
-
-        /* Section Containers */
-        section {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 3rem 2rem 5rem;
-        }
-
-        /* About Section */
-        .about-content {
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .about-content p {
-            font-size: 1.125rem;
-            color: var(--gray-700);
-            margin-bottom: 1.5rem;
-            line-height: 1.8;
-        }
-
-        .about-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .stat {
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--royal-purple);
-            display: block;
-        }
-
-        .stat-label {
-            color: var(--gray-600);
-            font-size: 1rem;
-            margin-top: 0.5rem;
-        }
-
-        /* Footer */
-        footer {
-            background-color: var(--gray-900);
-            color: var(--gray-400);
-            padding: 2rem;
-            text-align: center;
-        }
-
-        footer a {
-            color: var(--gray-300);
-            text-decoration: none;
-        }
-
-        footer a:hover {
-            color: var(--white);
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .page-header h1 {
-                font-size: 2rem;
-            }
-
-            nav ul {
-                display: none;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/shared.css">
+    <link rel="stylesheet" href="css/about.css">
 </head>
 <body>
     <!-- Header -->
@@ -212,18 +36,18 @@
     <!-- Page Header -->
     <div class="page-header">
         <h1>About Lilo</h1>
-        <p>Small team, big ambitions</p>
+        <p>Micro apps, major impact</p>
     </div>
 
     <!-- About Section -->
     <section id="about">
         <div class="about-content">
-            <p>Lilo is a small business app development company focused on creating meaningful mobile experiences. We believe great apps should be simple, beautiful, and genuinely useful.</p>
+            <p>Lilo is an indie app development company focused on creating mobile experiences that connect you to the real world. We believe great apps should be simple, beautiful, and genuinely useful.</p>
             <p>Our approach is straightforward: listen to what people need, design with intention, and build with care. Every app we create is a reflection of our commitment to quality and user experience.</p>
 
             <div class="about-stats">
                 <div class="stat">
-                    <span class="stat-number">1</span>
+                    <span class="stat-number">2</span>
                     <span class="stat-label">Apps in Development</span>
                 </div>
                 <div class="stat">
