@@ -9,7 +9,7 @@ alwaysApply: true
 
 This is a static marketing website for **Lilo Labs** (Lilo, LLC), showcasing the upcoming iOS app **TextTutor**. The site is a simple, elegant landing page with app screenshots and a privacy policy.
 
-**Live Site**: https://lilo.ventures (hosted on GitHub Pages)
+**Live Site**: https://lilo-labs.com (hosted on GitHub Pages)
 **Repository**: CharlieBurnett/Lilo-Labs-Site
 **Company**: Lilo, LLC
 **Product**: TextTutor for iOS - A language learning application
@@ -20,7 +20,7 @@ This is a static marketing website for **Lilo Labs** (Lilo, LLC), showcasing the
 Lilo-Labs-Site/
 ├── index.html              # Main landing page
 ├── privacypolicy.html      # Privacy policy page
-├── CNAME                   # Custom domain configuration (lilo.ventures)
+├── CNAME                   # Custom domain configuration (lilo-labs.com)
 ├── .gitignore             # macOS-specific ignore patterns
 ├── images/
 │   ├── Lilo Logo v2.png   # Company logo (4KB)
@@ -193,13 +193,13 @@ When making changes, verify:
 
 ### GitHub Pages Configuration
 - **Source**: Main branch, root directory
-- **Custom domain**: lilo.ventures (configured via CNAME)
+- **Custom domain**: lilo-labs.com (configured via CNAME)
 - **HTTPS**: Enabled (GitHub Pages default)
 - **Auto-deploy**: Pushes to main trigger automatic deployment
 
 ### Domain Setup
-- **CNAME record**: Points lilo.ventures to GitHub Pages
-- **File**: `CNAME` contains single line: `lilo.ventures`
+- **CNAME record**: Points lilo-labs.com to GitHub Pages
+- **File**: `CNAME` contains single line: `lilo-labs.com`
 - **Don't delete** this file or the custom domain will break
 
 ## Privacy and Legal

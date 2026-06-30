@@ -4,7 +4,7 @@ A quick guide to how this static marketing site is put together and how to maint
 
 ## Big picture
 
-Plain HTML5 + CSS, no build step, hosted on GitHub Pages at https://lilo.ventures.
+Plain HTML5 + CSS, no build step, hosted on GitHub Pages at https://lilo-labs.com.
 Each top-level page is its own `.html` file. Shared look-and-feel lives in `css/`,
 so a change to a color, button, or badge updates every page that uses it.
 
