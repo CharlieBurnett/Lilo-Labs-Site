@@ -1,309 +1,209 @@
----
-description: 
-alwaysApply: true
----
-
 # CLAUDE.md - Lilo Labs Website
 
 ## Project Overview
 
-This is a static marketing website for **Lilo Labs** (Lilo, LLC), showcasing the upcoming iOS app **TextTutor**. The site is a simple, elegant landing page with app screenshots and a privacy policy.
+This is the marketing website for **Lilo Labs** (Lilo, LLC) — a small indie app
+studio that builds a family of focused, single-purpose iOS apps. The site is the
+studio's home: it introduces the company, showcases each app, and shares news.
+It is **not** a single-product page — TextTutor was the first app, but the site
+is built to grow as more apps ship.
 
 **Live Site**: https://lilo-labs.com (hosted on GitHub Pages)
 **Repository**: CharlieBurnett/Lilo-Labs-Site
-**Company**: Lilo, LLC
-**Product**: TextTutor for iOS - A language learning application
+**Company**: Lilo, LLC — "Micro apps, major impact"
+
+### The apps (as shown on `apps.html`)
+The roster changes over time; the Apps page and its `.app-card` order are the
+source of truth. As of this writing:
+
+| App        | Tagline                            | Platform | Status                |
+|------------|------------------------------------|----------|-----------------------|
+| CurrenSee  | Live rates, right where you look.  | iOS      | Coming Soon           |
+| Slow Sipper| Drink less                         | iOS      | Live (App Store link) |
+| TextTutor  | Language learning, text first.     | iOS      | Live (App Store link) |
+
+Each app's iOS project lives in its **own separate repository** (e.g.
+`~/Programs/CurrenSee`); this repo is only the website.
+
+> **Deeper guide:** `howitworks.md` is the detailed, hands-on maintenance doc
+> (component anatomy, the carousel internals, how screenshots were captured,
+> etc.). Keep it updated alongside this file. This file is the high-level map and
+> the conventions; `howitworks.md` is the how-to.
 
 ## Repository Structure
 
 ```
 Lilo-Labs-Site/
-├── index.html              # Main landing page
-├── privacypolicy.html      # Privacy policy page
-├── CNAME                   # Custom domain configuration (lilo-labs.com)
-├── .gitignore             # macOS-specific ignore patterns
+├── index.html              # Landing page (hero + auto-rotating screenshot carousel)
+├── apps.html               # Our Apps — one .app-card per app
+├── about.html              # About the studio + stats
+├── news.html               # News / updates feed
+├── contact.html            # Contact (email)
+├── privacypolicy.html      # Privacy policy
+├── css/
+│   ├── base.css            # Design tokens (:root variables) + global reset
+│   ├── shared.css          # Header/nav/footer + cross-page elements
+│   ├── main.css            # Landing page (hero, CTA buttons)
+│   ├── apps.css            # Apps page (cards, badges, screenshot grid)
+│   ├── about.css           # About page
+│   ├── news.css            # News page
+│   ├── contact.css         # Contact page
+│   ├── privacypolicy.css   # Privacy page
+│   └── carousel.css        # Reusable .carousel component (home hero)
+├── js/
+│   └── carousel.js         # Auto-advances the home-page carousel (vanilla JS)
 ├── images/
-│   ├── Lilo Logo v2.png   # Company logo (4KB)
-│   ├── Screenshot 0.png   # App screenshot (1.1MB)
-│   ├── Screenshot 1.png   # App screenshot (1.3MB)
-│   └── Screenshot 2.png   # App screenshot (812KB)
-└── CLAUDE.md              # This file
+│   ├── Lilo Logo v2.png    # Company logo (used in nav)
+│   ├── currensee/          # One folder of PNG screenshots per app
+│   ├── slowsipper/
+│   └── texttutor/
+├── tests/
+│   └── carousel.spec.js    # Playwright tests (desktop + mobile)
+├── playwright.config.js    # Test config (serves the site, 2 viewports)
+├── package.json            # Dev-only: @playwright/test. The SITE has no build step.
+├── CNAME                   # Custom domain: lilo-labs.com
+├── howitworks.md           # Detailed maintenance guide (read this too)
+└── CLAUDE.md               # This file
 ```
 
 ## Technology Stack
 
-### Core Technologies
-- **Pure HTML5** - No templating engines or frameworks
-- **Inline CSS** - All styles embedded in `<style>` tags
-- **No JavaScript framework** - Only Google Analytics script
-- **No build tools** - Direct HTML editing, no compilation needed
-- **GitHub Pages** - Static site hosting
+### Core
+- **Pure HTML5** — one `.html` file per page, no templating or framework.
+- **Modular CSS** — external stylesheets in `css/`, **not** inline `<style>`.
+  `base.css` (tokens) + `shared.css` (chrome) load on every page; each page then
+  loads its own stylesheet.
+- **Vanilla JS** — only `js/carousel.js` (no framework, no dependencies).
+- **No build step** — edit HTML/CSS/JS directly; GitHub Pages serves as-is.
+- **Node is dev-only** — used solely to run the Playwright test suite
+  (`npm test`). It is never required to build or serve the site.
 
 ### Third-Party Services
-- **Google Analytics** (ID: G-G1TWRNQ451) - Usage tracking
-- **Firebase** - Analytics backend (mentioned in privacy policy)
-
-### Browser Features Used
-- CSS Grid (`grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))`)
-- Flexbox for centering
-- Responsive viewport units (`vw`, `vh`)
-- System font stack for performance
+- **Google Analytics** (`gtag.js`, ID `G-G1TWRNQ451`) — the same snippet is
+  pasted at the top of every page's `<head>`. Don't modify without permission.
+- **Apple App Store** — "Download Now" badges link to each live app's listing.
 
 ## Design System
 
-### Color Palette
+Defined once as CSS custom properties in `css/base.css` (`:root`). **Always reach
+for a token or existing class; never hardcode a hex value or use inline styles.**
+
+### Color tokens
 ```css
-Background:         #1f2121  /* Dark gray background */
-Container:          #434349  /* Medium gray card */
-Primary text:       #d5e1f4  /* Light blue-gray */
-Secondary text:     #babfc5  /* Medium gray */
-Body text:          #cbd0d6  /* Light gray */
-Accent/Coming soon: #86798d  /* Purple-gray */
-Screenshot bg:      #a592ae  /* Light purple */
+--royal-purple: #6B46C1;   /* primary brand / accents, links, CTAs */
+--purple-light: #8B5CF6;
+--purple-dark:  #5B21B6;   /* button hover */
+--gray-50 … --gray-900;    /* neutral ramp; gray-900 = footer bg, headings */
+--white / --black;
+--shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+--font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, … ;
 ```
 
-### Typography
-- **Font Family**: System fonts (`-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif`)
-- **H1 (Lilo Labs)**: 5rem, #d5e1f4
-- **H2 (Become Fluent)**: 1.8rem, italic, #babfc5
-- **Body Text**: 1.2rem, #cbd0d6
-- **Coming Soon**: 1.2rem, italic, #86798d
+The site is a **light** theme: white background, dark-gray text, royal-purple
+accents, dark-gray (`--gray-900`) footer. (Note: an older version of this site
+was a dark single-page design — that is gone.)
 
-### Responsive Design
-- **Container**: `max-width: 80vw`, `min-width: 400px`
-- **Screenshots**: CSS Grid with `auto-fit` and `minmax(200px, 1fr)`
-- **Mobile-first**: Viewport meta tag with `width=device-width, initial-scale=1.0`
-- **Spacing**: 2rem margins, 1.5rem grid gaps
+### Typography
+- System font stack via `--font-sans` (no web fonts — intentional, for speed).
+- `.hero h1`: 3.5rem / 800; `.page-header h1`: 2.5rem / 700; body 1rem, line-height 1.6.
+
+## Reusable Components (do not re-create inline)
+
+Per the project's coding standards, UI elements are classes reused across pages,
+not one-off inline markup/styles:
+
+- **Header / nav** (`shared.css`) — fixed, blurred white bar with `.logo-nav` and
+  a `<nav><ul>` of page links. The current page's link gets `class="active"`.
+  Identical on every page.
+- **Footer** (`shared.css`) — `--gray-900` bar with copyright + privacy link.
+- **Buttons** (`main.css`) — `.btn` base with `.btn-primary` (filled purple) and
+  `.btn-secondary` (outlined) modifiers.
+- **Page header** (`shared.css`) — `.page-header` title/subtitle band used by the
+  interior pages.
+- **Cards** — `.app-card` (apps.css) and `.news-card` (news.css), both sharing the
+  `.app-card, .news-card` base in `shared.css`.
+- **Badges** (`apps.css`) — `.platform-badge` (e.g. `iOS`) and `.status-badge`
+  (purple CTA); `.status-badge.coming-soon` is the gray, non-linked modifier.
+- **Carousel** (`carousel.css` + `carousel.js`) — the home hero's reusable
+  `.carousel` / `.carousel-track` / `.carousel-slide` component. See the carousel
+  section of `howitworks.md` for the 3-up / 1-up logic.
+
+When something genuinely new is needed, add a **class**, not an inline style.
 
 ## Development Workflow
 
-### Making Changes
+1. **Edit directly** — no build step. Change the `.html` and the relevant
+   stylesheet in `css/`.
+2. **Reuse first** — use an existing token/class before adding one; if you add a
+   color or component, add it to `base.css`/`shared.css` so every page benefits.
+3. **Test in a browser** (see Testing) and run the Playwright suite if you touched
+   the carousel or layout.
+4. **Update `howitworks.md`** when you add/change a feature.
+5. **Commit** with a clear message and **push to `main`** — GitHub Pages
+   auto-deploys `main` to lilo-labs.com.
 
-1. **Edit HTML files directly** - No build step required
-2. **Test locally** - Open `index.html` in a browser
-3. **Commit changes** with descriptive messages
-4. **Push to designated branch** (usually `claude/` prefixed branches)
-5. **GitHub Pages auto-deploys** from the main branch
+### Common tasks
+- **Add an app:** copy an existing `.app-card` in `apps.html` (icon emoji, name,
+  tagline, badges, three screenshot `<img>`s); put the newest/most-promoted card
+  first. Add its screenshots under `images/<app-name>/`. Optionally add it to the
+  home carousel (round-robin order — see `howitworks.md`).
+- **Add a news item:** prepend a `.news-card` to the `.news-grid` in `news.html`.
+- **Update an app's status:** swap its `.status-badge` (coming-soon ↔ Download
+  Now link) on `apps.html`.
+- **Change a color/spacing globally:** edit the token in `base.css`.
 
-### Git Conventions
+## Testing
 
-**Commit Message Patterns** (from recent history):
-- "PNG fix from JPEG" - Image format corrections
-- "Privacy policy added, screenshots updated" - Multi-file updates
-- "Update Screenshot X.png" - Asset updates
-- "screenshots are centered in mobile views" - CSS/layout fixes
-- "Fix logo not showing up" - Bug fixes
+Per the coding standards, verify changes in a real browser and keep tests current.
 
-**Branch Strategy**:
-- Claude AI assistants work on `claude/` prefixed branches
-- Main branch serves the live site via GitHub Pages
-- Direct pushes to designated feature branches
-
-### Common Tasks
-
-#### Updating Screenshots
-1. Replace PNG files in `images/` directory
-2. Ensure consistent naming: `Screenshot 0.png`, `Screenshot 1.png`, etc.
-3. Use PNG format (not JPEG) for quality
-4. Optimize file sizes when possible (currently 800KB-1.3MB each)
-5. Maintain 3 screenshots for grid layout consistency
-
-#### Modifying Styles
-- Edit the `<style>` block in `index.html` (lines 18-102)
-- No CSS preprocessors - direct CSS only
-- Test responsive behavior at different viewport sizes
-- Use existing color variables from palette above
-
-#### Content Updates
-- **Main heading**: Edit the `<img>` logo source or add text
-- **Tagline**: Modify "Become Fluent" (line 108)
-- **App name**: Change "TextTutor for iOS" (line 110)
-- **Coming soon text**: Edit line 109
-
-#### Privacy Policy Changes
-- Edit `privacypolicy.html` directly
-- Update "Last updated" date (line 10)
-- Add third-party service links to the `<ul>` list (lines 21-23)
-
-## Key Conventions for AI Assistants
-
-### Code Style
-1. **Indentation**: 4 spaces (consistent throughout)
-2. **HTML**: Semantic tags where appropriate
-3. **CSS**: Single-line simple properties, multi-line for complex rules
-4. **Inline styles**: Use sparingly for one-off adjustments (see screenshots)
-5. **Comments**: Minimal - code should be self-documenting
-
-### File Handling
-- **Always use PNG** for images (not JPEG)
-- **Preserve file naming** conventions (e.g., "Screenshot 0.png" not "screenshot-0.png")
-- **Keep images in `/images` directory**
-- **Don't add build files** - this is intentionally a simple static site
-
-### Content Guidelines
-- **Tone**: Professional but friendly, minimalist
-- **Privacy-first**: The privacy policy emphasizes data minimalism ("We do not want your data")
-- **Mobile focus**: TextTutor is an iOS app, so mobile presentation is critical
-- **Visual emphasis**: Screenshots are the primary content after the logo
-
-### Google Analytics
-- **Tracking ID**: G-G1TWRNQ451
-- **Implementation**: Standard gtag.js script in `<head>`
-- **Placement**: Before other meta tags (lines 5-13)
-- **Don't modify** unless explicitly requested
-
-### Responsive Behavior
-- **Mobile breakpoint**: Grid auto-adjusts with `minmax(200px, 1fr)`
-- **Container scaling**: 80vw max, 400px min, centered with flexbox
-- **Screenshot layout**: 3-column grid on desktop, single column on mobile
-- **Font sizes**: Already optimized (5rem h1 scales well)
-
-## Testing Checklist
-
-When making changes, verify:
-- [ ] Page renders correctly in mobile view (< 768px width)
-- [ ] Screenshots display properly in grid layout
-- [ ] Logo loads correctly
-- [ ] Colors match the design system
-- [ ] Text is readable with sufficient contrast
-- [ ] Links work (privacy policy references)
-- [ ] Google Analytics script is intact
-- [ ] No console errors in browser DevTools
-- [ ] CNAME file unchanged (unless domain changes)
-- [ ] .gitignore includes macOS artifacts
-
-## Common Issues and Solutions
-
-### Images Not Showing
-- **Cause**: Case-sensitive file paths or incorrect extensions
-- **Solution**: Verify exact filename in `images/` directory, use PNG format
-- **Example**: Commit "Trying to fix images not snowing" (typo in commit) - 4bdee9f
-
-### Layout Breaking on Mobile
-- **Cause**: Fixed widths or missing viewport meta tag
-- **Solution**: Use responsive units (vw, %, auto-fit), ensure viewport meta present
-- **Example**: Commit "screenshots are centered in mobile views" - dbc571d
-
-### Logo Not Displaying
-- **Cause**: Incorrect path or file format issues
-- **Solution**: Verify path is `images/Lilo Logo v2.png` exactly
-- **Example**: Commit "Fix logo not showing up" - 64823da
+- **Manual:** serve locally (`python3 -m http.server 8123`) and open the page, or
+  render headlessly (see the snippet in `howitworks.md`). The browser blocks
+  `file://`, so use a local server when scripting/Playwright.
+- **Automated (Playwright):** `npm test` runs `tests/carousel.spec.js` against
+  `desktop` (1200px, 3-up) and `mobile` (390px, 1-up) viewports — covers image
+  loading, layout, auto-advance, and wrap logic. Config auto-starts the static
+  server. First-time setup: `npm install && npx playwright install chromium`.
+- **Always check mobile** (≤ 390px wide): nav collapses (the `<ul>` is hidden
+  under 768px), the carousel drops to one screenshot, and cards/grids stack.
 
 ## Deployment
 
-### GitHub Pages Configuration
-- **Source**: Main branch, root directory
-- **Custom domain**: lilo-labs.com (configured via CNAME)
-- **HTTPS**: Enabled (GitHub Pages default)
-- **Auto-deploy**: Pushes to main trigger automatic deployment
-
-### Domain Setup
-- **CNAME record**: Points lilo-labs.com to GitHub Pages
-- **File**: `CNAME` contains single line: `lilo-labs.com`
-- **Don't delete** this file or the custom domain will break
+- **Source:** `main` branch, repo root, via GitHub Pages.
+- **Custom domain:** lilo-labs.com — configured by the **`CNAME`** file, which
+  must contain the single line `lilo-labs.com`. **Don't delete or change it** or
+  the custom domain breaks.
+- **HTTPS:** enabled (GitHub Pages default).
+- **Auto-deploy:** pushing to `main` redeploys within a minute or two.
 
 ## Privacy and Legal
 
-### Data Collection
-- **User data**: None collected directly by the site
-- **Third-party**: Google Analytics/Firebase may collect analytics data
-- **Philosophy**: "We do not want your data" - privacy-first approach
+- **Site itself collects no user data directly**; Google Analytics/Firebase may
+  collect analytics. Philosophy is privacy-first / data-minimal.
+- **Privacy policy:** `privacypolicy.html`. Contact email across the site is
+  **hello@lilo-labs.com** (keep `contact.html` link text and `mailto:` in sync).
 
-### Privacy Policy
-- **Location**: `/privacypolicy.html`
-- **Last updated**: 2/17/2025
-- **Key point**: No direct data collection, third-party services listed with links
+## Conventions for AI Assistants
 
-## Future Considerations
+### Do
+- ✅ Keep it simple — plain HTML/CSS/JS, no frameworks or build pipeline.
+- ✅ Reuse tokens and component classes; put shared styles in `base`/`shared`.
+- ✅ Treat the studio as multi-app — don't reframe the site around one product.
+- ✅ Use PNG for screenshots, stored per app in `images/<app-name>/`.
+- ✅ Test on mobile width; run `npm test` after carousel/layout changes.
+- ✅ Update `howitworks.md` and keep app/status facts accurate.
+- ✅ Ask before deleting files; keep any secrets out of git.
 
-### When the App Launches
-- Update "Coming soon" text to launch announcement
-- Consider adding App Store badge/link
-- May need download/CTA buttons
-
-### Potential Enhancements
-- Add favicon (currently not present)
-- Add Open Graph meta tags for social sharing
-- Consider adding robots.txt for SEO
-- Add Apple touch icon for iOS bookmarking
-- Implement dark/light mode toggle (currently fixed dark theme)
-
-### Performance
-- **Current**: All assets load from repository (no CDN)
-- **Images**: Could be optimized further (1.3MB max is acceptable but improvable)
-- **CSS**: Could be external file if site grows (currently 84 lines inline)
-
-## Quick Reference
-
-### File Locations
-```
-Logo:              images/Lilo Logo v2.png
-Screenshots:       images/Screenshot [0-2].png
-Main page styles:  index.html lines 18-102
-Google Analytics:  index.html lines 5-13
-Privacy policy:    privacypolicy.html
-Domain config:     CNAME
-```
-
-### Important Line Numbers
-```
-index.html:
-  - Google Analytics: 5-13
-  - CSS styles: 18-102
-  - Logo: 106
-  - Tagline: 108
-  - App name: 110
-  - Screenshots: 112-116
-
-privacypolicy.html:
-  - Last updated: 10
-  - Third-party links: 21-23
-```
-
-### Colors Quick Reference
-```
-Dark bg:    #1f2121
-Container:  #434349
-Heading:    #d5e1f4
-Subhead:    #babfc5
-Body:       #cbd0d6
-Accent:     #86798d
-Photos bg:  #a592ae
-```
-
-## AI Assistant Guidelines
-
-### When Working on This Project
-1. **Read before modifying** - Always check current HTML before making changes
-2. **Preserve simplicity** - Don't add frameworks, build tools, or over-engineer
-3. **Match existing style** - Use the established color palette and spacing
-4. **Test responsiveness** - Mobile view is critical for iOS app landing page
-5. **Commit clearly** - Use descriptive messages like existing history
-6. **PNG only** - Image format matters for this project
-7. **Respect the vision** - This is intentionally minimal and elegant
-
-### What NOT to Do
-- ❌ Add React, Vue, or other frameworks
-- ❌ Create separate CSS files without good reason
-- ❌ Use JPEG for images
-- ❌ Modify Google Analytics without permission
-- ❌ Delete or modify CNAME file
-- ❌ Add complex build pipelines
-- ❌ Over-comment the HTML
-- ❌ Change font to custom web fonts (system fonts intentional)
-
-### Recommended Approach
-- ✅ Keep it simple and maintainable
-- ✅ Focus on visual polish and responsiveness
-- ✅ Optimize images without changing format
-- ✅ Use semantic HTML where beneficial
-- ✅ Test on mobile viewport
-- ✅ Follow existing naming conventions
-- ✅ Commit frequently with clear messages
-- ✅ Ask before major structural changes
+### Don't
+- ❌ Add React/Vue/etc., a CSS preprocessor, or a build step for the site.
+- ❌ Use inline `style=""` or hardcoded hex values — use tokens/classes.
+- ❌ Reintroduce the old dark single-page TextTutor design.
+- ❌ Modify the Google Analytics snippet without permission.
+- ❌ Delete or edit `CNAME` (custom domain).
+- ❌ Switch to custom web fonts (system stack is intentional).
+- ❌ Use JPEG for screenshots.
 
 ---
 
-**Last updated**: 2026-01-18
+**Last updated**: 2026-06-30
 **Maintained by**: AI assistants working with Lilo Labs
-**Questions**: Refer to recent commit history and existing code patterns
+**See also**: `howitworks.md` for the detailed maintenance guide.
