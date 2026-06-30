@@ -57,6 +57,10 @@
     background-color: var(--royal-purple);
 }
 
+.status-badge.coming-soon {
+    background-color: var(--gray-500);
+}
+
 .status-badge a {
     color: var(--white);
     text-decoration: none;
