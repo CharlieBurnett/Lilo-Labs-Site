@@ -35,3 +35,13 @@ Temporary Items
 *.icloud
 
 # End of https://www.toptal.com/developers/gitignore/api/macos
+
+### Node / Playwright (browser tests only — the site itself has no build step) ###
+node_modules/
+test-results/
+playwright-report/
+playwright/.cache/
+
+### Local test/dev scratch ###
+.playwright-mcp/
+carousel-*.png

@@ -19,6 +19,10 @@ css/
   base.css        Design tokens (:root color variables) + global/layout styles
   shared.css      Header/nav/footer + elements reused across pages
   apps.css        Styles specific to the Apps page (app cards, badges, screenshots)
+  main.css        Styles specific to the landing page (hero, CTA buttons)
+  carousel.css    The home-page screenshot carousel (reusable .carousel component)
+js/
+  carousel.js     Auto-advances the home-page carousel
 images/
   <app-name>/     One folder of screenshots per app
 ```
@@ -54,6 +58,41 @@ Two badge classes in `css/apps.css`, both built on the shared `.platform-badge,
 To add a new app, copy an existing `.app-card`, swap the icon emoji, name,
 tagline, badges, and the three `<img>` sources. Card order on the page is the
 display order — put the newest/most-promoted app first.
+
+## The home page carousel (`index.html`)
+
+The hero ("Building Apps That Matter") includes an auto-rotating screenshot
+carousel that shows **three screenshots side by side** (one on phones) and
+pulls images round-robin from each app on the Apps page.
+
+- **Markup** lives in the `.hero` of `index.html` between the paragraph and the
+  CTA buttons: a `.carousel` viewport wrapping a `.carousel-track` flex row of
+  `.carousel-slide` items, each holding one `.carousel-image`.
+- **Styles** are in `css/carousel.css` as a reusable `.carousel` component — no
+  inline styles. Each `.carousel-slide` is `flex: 0 0 33.3333%` so three fit in
+  the viewport, dropping to `flex: 0 0 100%` (one-up) under the 768px mobile
+  breakpoint. Spacing between the three comes from horizontal **padding inside
+  each slide**, not a flex `gap`, so every slide stays exactly one-third wide and
+  the JS transform math stays exact. Images use `max-height` (440px desktop /
+  360px mobile) with `width: auto`, so each screenshot is height-reduced while
+  keeping its aspect ratio; this also lets the landscape Apple Watch shot sit
+  alongside portrait phone shots without distortion.
+- **Behavior** is in `js/carousel.js`: every 5 seconds it shifts the track one
+  slide to the left via `translateX(-current * (100 / visibleCount)%)`. It reads
+  the same 768px breakpoint through `matchMedia` to know whether 1 or 3 slides
+  are visible, and re-syncs on viewport change. `current` cycles `0` →
+  `slides.length - visibleCount` (6 for 9 slides at 3-up) and then wraps back to
+  `0`, so the last visible trio is always full — no empty slots ever show. The
+  0.6s CSS transition does the sliding. Pure vanilla JS, no dependencies.
+- **Slide order** is round-robin by screenshot index: each app's first
+  screenshot, then each app's second, then each app's third — currently
+  CurrenSee → Slow Sipper → TextTutor across indexes 1, 2, 3 (9 slides).
+
+To add an app to the rotation, add three new `.carousel-slide` `<img>`s in the
+right interleaved positions. If you ever change `.carousel`'s `max-width`, the JS
+needs no change — it shifts by percentage, not pixels. If you change the 768px
+breakpoint or the 3-up count, keep `css/carousel.css` and the `visibleCount()` /
+`MOBILE_QUERY` values in `js/carousel.js` in sync.
 
 ## Screenshots: size and format
 

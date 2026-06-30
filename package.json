@@ -1,0 +1,12 @@
+{
+  "name": "lilo-labs-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static marketing site for Lilo Labs. Plain HTML/CSS/JS — no build step. Node is used only for Playwright browser tests.",
+  "scripts": {
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.61.1"
+  }
+}
