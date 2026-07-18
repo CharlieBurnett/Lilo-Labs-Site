@@ -1,0 +1,1 @@
+- Make carosel with shuffled images from each app behind "Building apps that matter"
