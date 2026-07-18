@@ -37,7 +37,7 @@ test.beforeEach(async ({ page }) => {
   await page.waitForSelector('.carousel-track');
 });
 
-test('all nine screenshots load successfully', async ({ page }) => {
+test('all eight screenshots load successfully', async ({ page }) => {
   const broken = await page.evaluate(() =>
     [...document.querySelectorAll('.carousel-image')]
       .filter((img) => !(img.complete && img.naturalWidth > 0))
@@ -46,7 +46,7 @@ test('all nine screenshots load successfully', async ({ page }) => {
   expect(broken).toEqual([]);
 
   const { slideCount } = await readLayout(page);
-  expect(slideCount).toBe(9);
+  expect(slideCount).toBe(8);
 });
 
 test('shows three slides side by side on desktop, one on mobile', async ({ page }) => {

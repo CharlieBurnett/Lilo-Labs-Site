@@ -81,12 +81,14 @@ pulls images round-robin from each app on the Apps page.
   slide to the left via `translateX(-current * (100 / visibleCount)%)`. It reads
   the same 768px breakpoint through `matchMedia` to know whether 1 or 3 slides
   are visible, and re-syncs on viewport change. `current` cycles `0` →
-  `slides.length - visibleCount` (6 for 9 slides at 3-up) and then wraps back to
+  `slides.length - visibleCount` (5 for 8 slides at 3-up) and then wraps back to
   `0`, so the last visible trio is always full — no empty slots ever show. The
   0.6s CSS transition does the sliding. Pure vanilla JS, no dependencies.
 - **Slide order** is round-robin by screenshot index: each app's first
   screenshot, then each app's second, then each app's third — currently
-  CurrenSee → Slow Sipper → TextTutor across indexes 1, 2, 3 (9 slides).
+  CurrenSee → Slow Sipper → TextTutor across indexes 1, 2, 3 (8 slides). Slow
+  Sipper only contributes 2 rounds since its settings-screen shot was dropped
+  from the rotation (settings pages aren't shown in marketing screenshots).
 
 To add an app to the rotation, add three new `.carousel-slide` `<img>`s in the
 right interleaved positions. If you ever change `.carousel`'s `max-width`, the JS
