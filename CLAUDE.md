@@ -54,11 +54,13 @@ Lilo-Labs-Site/
 │   └── carousel.js         # Auto-advances the home-page carousel (vanilla JS)
 ├── images/
 │   ├── Lilo Logo v2.png    # Company logo (used in nav)
+│   ├── og-image.png        # 1200x630 link-preview image (Open Graph / iMessage)
 │   ├── currensee/          # One folder of PNG screenshots per app
 │   ├── slowsipper/
 │   └── texttutor/
 ├── tests/
-│   └── carousel.spec.js    # Playwright tests (desktop + mobile)
+│   ├── carousel.spec.js    # Playwright tests (desktop + mobile)
+│   └── social-meta.spec.js # Playwright tests for the link-preview meta tags
 ├── playwright.config.js    # Test config (serves the site, 2 viewports)
 ├── package.json            # Dev-only: @playwright/test. The SITE has no build step.
 ├── CNAME                   # Custom domain: lilo-labs.com
@@ -151,6 +153,9 @@ When something genuinely new is needed, add a **class**, not an inline style.
 - **Update an app's status:** swap its `.status-badge` (coming-soon ↔ Download
   Now link) on `apps.html`.
 - **Change a color/spacing globally:** edit the token in `base.css`.
+- **Add a page:** copy the Open Graph / Twitter block from an existing page's
+  `<head>` and update `og:url`, `og:title`, and the descriptions; add the page to
+  `tests/social-meta.spec.js`. See the link-preview section of `howitworks.md`.
 
 ## Testing
 
