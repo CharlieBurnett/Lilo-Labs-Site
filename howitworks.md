@@ -185,6 +185,38 @@ If you change the image after it has been shared, the platforms cache
 aggressively — re-scrape via Facebook's Sharing Debugger / LinkedIn's Post
 Inspector, or ship it under a new filename.
 
+## Favicons
+
+The tab/bookmark/home-screen icon is the **final "o" of the Lilo wordmark**,
+cropped out of `images/Lilo Logo v2.png` and centered so the mark fills ~86-88%
+of the square. The full wordmark is unreadable at 16px; the "o" is a distinctive
+target ring that survives the shrink.
+
+The crop is measured, not eyeballed: the logo is 296 × 210 and the last glyph's
+alpha bounding box is **x 175-274, y 75-174** (a 100 × 100 square). Same approach
+as the share image — a scratch HTML page scales/offsets the logo inside a square
+viewport and headless Chromium screenshots it at each size (with
+`omitBackground` for the transparent ones). If the logo file is ever replaced,
+re-measure that bounding box before regenerating.
+
+| File | Purpose |
+|------|---------|
+| `favicon.ico` (root) | 16/32/48 multi-size ICO (PNG payloads). Browsers and scrapers request `/favicon.ico` by default, so it stays at the repo root. |
+| `images/favicon-32.png` | Standard tab icon. |
+| `images/favicon-192.png` | Android / high-DPI. |
+| `images/favicon-512.png` | Manifest / install prompt. |
+| `images/apple-touch-icon.png` | 180 × 180 iOS home screen. |
+| `site.webmanifest` (root) | Name, theme color, and the 192/512 icons. |
+
+Two deliberate differences: the PNG favicons keep a **transparent** background
+(the purple mark reads on both light and dark browser chrome), while the
+**apple-touch-icon is opaque white** with more padding — iOS composites it onto
+the home screen and would otherwise fill the transparency with black.
+
+Every page's `<head>` carries the same `<link rel="icon">` set plus
+`<meta name="theme-color" content="#6B46C1">`. Browsers cache favicons hard; a
+hard reload (or a fresh profile) may be needed to see a change locally.
+
 ## Testing changes
 
 Open the page directly (`open apps.html`) or render headlessly to check layout:

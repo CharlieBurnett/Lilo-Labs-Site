@@ -50,6 +50,42 @@ for (const { path, url } of PAGES) {
   });
 }
 
+for (const { path } of PAGES) {
+  test(`${path} links the favicon set`, async ({ page }) => {
+    await page.goto(path);
+    const href = (sel) => page.locator(`head ${sel}`).getAttribute('href');
+
+    expect(await href('link[rel="icon"][sizes="any"]')).toBe('favicon.ico');
+    expect(await href('link[rel="icon"][sizes="32x32"]')).toBe('images/favicon-32.png');
+    expect(await href('link[rel="icon"][sizes="192x192"]')).toBe('images/favicon-192.png');
+    expect(await href('link[rel="apple-touch-icon"]')).toBe('images/apple-touch-icon.png');
+    expect(await href('link[rel="manifest"]')).toBe('site.webmanifest');
+    expect(await content(page, 'meta[name="theme-color"]')).toBe('#6B46C1');
+  });
+}
+
+test('every favicon asset is served', async ({ request }) => {
+  const assets = [
+    ['/favicon.ico', 'icon'],
+    ['/images/favicon-32.png', 'image/png'],
+    ['/images/favicon-192.png', 'image/png'],
+    ['/images/favicon-512.png', 'image/png'],
+    ['/images/apple-touch-icon.png', 'image/png'],
+    ['/site.webmanifest', 'json'],
+  ];
+  for (const [url, type] of assets) {
+    const response = await request.get(url);
+    expect(response.status(), url).toBe(200);
+    expect(response.headers()['content-type'], url).toContain(type);
+  }
+
+  // The manifest must point at icons that actually exist.
+  const manifest = await (await request.get('/site.webmanifest')).json();
+  for (const icon of manifest.icons) {
+    expect((await request.get(icon.src)).status(), icon.src).toBe(200);
+  }
+});
+
 test('the share image exists and is a 1200x630 PNG', async ({ page, request }) => {
   const response = await request.get('/images/og-image.png');
   expect(response.status()).toBe(200);

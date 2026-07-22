@@ -55,6 +55,8 @@ Lilo-Labs-Site/
 ├── images/
 │   ├── Lilo Logo v2.png    # Company logo (used in nav)
 │   ├── og-image.png        # 1200x630 link-preview image (Open Graph / iMessage)
+│   ├── favicon-32/192/512.png  # Favicons (the "o" cropped from the logo)
+│   ├── apple-touch-icon.png    # 180x180 iOS home-screen icon (opaque)
 │   ├── currensee/          # One folder of PNG screenshots per app
 │   ├── slowsipper/
 │   └── texttutor/
@@ -63,6 +65,8 @@ Lilo-Labs-Site/
 │   └── social-meta.spec.js # Playwright tests for the link-preview meta tags
 ├── playwright.config.js    # Test config (serves the site, 2 viewports)
 ├── package.json            # Dev-only: @playwright/test. The SITE has no build step.
+├── favicon.ico             # Multi-size tab icon (must stay at the repo root)
+├── site.webmanifest        # App name, theme color, install icons
 ├── CNAME                   # Custom domain: lilo-labs.com
 ├── howitworks.md           # Detailed maintenance guide (read this too)
 └── CLAUDE.md               # This file
@@ -155,7 +159,8 @@ When something genuinely new is needed, add a **class**, not an inline style.
 - **Change a color/spacing globally:** edit the token in `base.css`.
 - **Add a page:** copy the Open Graph / Twitter block from an existing page's
   `<head>` and update `og:url`, `og:title`, and the descriptions; add the page to
-  `tests/social-meta.spec.js`. See the link-preview section of `howitworks.md`.
+  `tests/social-meta.spec.js`. Also copy the favicon `<link>` block. See the
+  link-preview and favicon sections of `howitworks.md`.
 
 ## Testing
 
@@ -164,7 +169,9 @@ Per the coding standards, verify changes in a real browser and keep tests curren
 - **Manual:** serve locally (`python3 -m http.server 8123`) and open the page, or
   render headlessly (see the snippet in `howitworks.md`). The browser blocks
   `file://`, so use a local server when scripting/Playwright.
-- **Automated (Playwright):** `npm test` runs `tests/carousel.spec.js` against
+- **Automated (Playwright):** `npm test` runs `tests/carousel.spec.js` and
+  `tests/social-meta.spec.js` (share tags, favicons, and that every icon asset
+  resolves) against
   `desktop` (1200px, 3-up) and `mobile` (390px, 1-up) viewports — covers image
   loading, layout, auto-advance, and wrap logic. Config auto-starts the static
   server. First-time setup: `npm install && npx playwright install chromium`.
@@ -209,6 +216,6 @@ Per the coding standards, verify changes in a real browser and keep tests curren
 
 ---
 
-**Last updated**: 2026-06-30
+**Last updated**: 2026-07-22
 **Maintained by**: AI assistants working with Lilo Labs
 **See also**: `howitworks.md` for the detailed maintenance guide.
