@@ -75,18 +75,18 @@ pulls images round-robin from each app on the Apps page.
   each slide**, not a flex `gap`, so every slide stays exactly one-third wide and
   the JS transform math stays exact. Images use `max-height` (440px desktop /
   360px mobile) with `width: auto`, so each screenshot is height-reduced while
-  keeping its aspect ratio; this also lets the landscape Apple Watch shot sit
-  alongside portrait phone shots without distortion.
+  keeping its aspect ratio;
+  this keeps mixed aspect ratios from distorting.
 - **Behavior** is in `js/carousel.js`: every 5 seconds it shifts the track one
   slide to the left via `translateX(-current * (100 / visibleCount)%)`. It reads
   the same 768px breakpoint through `matchMedia` to know whether 1 or 3 slides
   are visible, and re-syncs on viewport change. `current` cycles `0` →
-  `slides.length - visibleCount` (5 for 8 slides at 3-up) and then wraps back to
+  `slides.length - visibleCount` (2 for 5 slides at 3-up) and then wraps back to
   `0`, so the last visible trio is always full — no empty slots ever show. The
   0.6s CSS transition does the sliding. Pure vanilla JS, no dependencies.
 - **Slide order** is round-robin by screenshot index: each app's first
   screenshot, then each app's second, then each app's third — currently
-  CurrenSee → Slow Sipper → TextTutor across indexes 1, 2, 3 (8 slides). Slow
+  Slow Sipper → TextTutor across indexes 1, 2, 3 (5 slides). Slow
   Sipper only contributes 2 rounds since its settings-screen shot was dropped
   from the rotation (settings pages aren't shown in marketing screenshots).
 
@@ -102,45 +102,6 @@ Phone screenshots are PNG at **1290 × 2796** (iPhone Pro Max portrait). They're
 displayed at `width: 100%` in the grid, so the exact pixel size isn't critical,
 but keeping them all the same dimensions and aspect ratio keeps the grid tidy.
 Store each app's screenshots in `images/<app-name>/`.
-
-### How the CurrenSee screenshots were captured
-
-CurrenSee is an iOS app in a separate repo (`~/Programs/CurrenSee`). Tagline on
-the site: **"Live rates, right where you look."** — the three screenshots are
-chosen to sell that "glanceable" promise: the converter, home-screen widgets,
-and the Apple Watch app.
-
-Shots were taken from the simulators with XcodeBuildMCP:
-
-1. `build_run_sim` of the `CurrenSee` scheme onto an iPhone 16 Pro Max simulator
-   (native 1320 × 2868), and the `CurrenSee watchOS Watch App` scheme onto an
-   Apple Watch Ultra 2 simulator (native 410 × 502).
-2. `xcrun simctl io <udid> screenshot --type=png` for full-resolution captures
-   (the MCP `screenshot` tool returns a small optimized JPEG — not what we want
-   for the site).
-3. **Widgets and watch faces can't be placed via script** — adding a home-screen
-   widget or a watch complication is manual drag-and-drop, and simulator
-   UI-automation/accessibility wasn't available in this environment. So the user
-   placed the home-screen widgets by hand, then we captured. (We use the watch
-   *app* screen rather than a face complication for the same reason.)
-4. The watch screen is small and a different shape than a phone. To keep all
-   three tiles the same size, the watch capture is composited onto a 1290 × 2796
-   canvas (iOS light-gray `#F2F2F7`, matching the converter shot) with rounded
-   corners + a soft shadow, so it reads as a clean Apple Watch product tile. The
-   compositor is a throwaway CoreGraphics/AppKit Swift script (`swift
-   compose_watch.swift in.png out.png`).
-5. `sips -z 2796 1290` normalizes the phone PNGs to the site's standard size.
-
-Tip for varying the converter's displayed pair without tapping: change the app's
-persisted currency by editing its App Group prefs **while the sim is shut down**,
-then reboot — `PlistBuddy` set `baseCode`/`targetCode` in
-`.../AppGroup/<id>/Library/Preferences/group.com.lilolabs.CurrenSee.plist`. A
-running `cfprefsd` caches and would overwrite a direct file edit, and `simctl
-spawn defaults write` writes to a different store than the app's sandboxed
-container — so neither works unless the sim is shut down first.
-
-Resulting files: `images/currensee/01_convert.png` (converter, USD→EUR),
-`02_home_widget.png` (home-screen widgets), `03_watch.png` (Apple Watch app).
 
 ## Link previews when the site is shared
 

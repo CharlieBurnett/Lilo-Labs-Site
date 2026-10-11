@@ -18,12 +18,11 @@ source of truth. As of this writing:
 
 | App        | Tagline                            | Platform | Status                |
 |------------|------------------------------------|----------|-----------------------|
-| CurrenSee  | Live rates, right where you look.  | iOS      | Coming Soon           |
 | Slow Sipper| Drink less                         | iOS      | Live (App Store link) |
 | TextTutor  | Language learning, text first.     | iOS      | Live (App Store link) |
 
 Each app's iOS project lives in its **own separate repository** (e.g.
-`~/Programs/CurrenSee`); this repo is only the website.
+`~/Programs/<AppName>`); this repo is only the website.
 
 > **Deeper guide:** `howitworks.md` is the detailed, hands-on maintenance doc
 > (component anatomy, the carousel internals, how screenshots were captured,
@@ -57,8 +56,7 @@ Lilo-Labs-Site/
 │   ├── og-image.png        # 1200x630 link-preview image (Open Graph / iMessage)
 │   ├── favicon-32/192/512.png  # Favicons (the "o" cropped from the logo)
 │   ├── apple-touch-icon.png    # 180x180 iOS home-screen icon (opaque)
-│   ├── currensee/          # One folder of PNG screenshots per app
-│   ├── slowsipper/
+│   ├── slowsipper/         # One folder of PNG screenshots per app
 │   └── texttutor/
 ├── tests/
 │   ├── carousel.spec.js    # Playwright tests (desktop + mobile)
