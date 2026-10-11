@@ -8,7 +8,9 @@ const BASE_URL = `http://localhost:${PORT}`;
 
 module.exports = defineConfig({
   testDir: './tests',
-  fullyParallel: true,
+  // One worker: python's http.server drops/stalls image requests under
+  // parallel load, which made carousel tests fail intermittently.
+  workers: 1,
   reporter: 'list',
   use: {
     baseURL: BASE_URL,

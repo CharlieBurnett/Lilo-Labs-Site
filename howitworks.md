@@ -195,3 +195,9 @@ screenshots should collapse to one column.
 and auto-advance) and `tests/social-meta.spec.js` (every page has the full
 Open Graph / Twitter card block, and `images/og-image.png` really is a 1200 × 630
 PNG at the URL those tags point to).
+
+The suite runs with **one worker** (`workers: 1` in `playwright.config.js`).
+Python's `http.server` can't keep up with several parallel browsers requesting
+the screenshot PNGs, which made carousel tests fail at random. Serial runs take
+~35s instead of ~15s, but are reliable — don't raise the worker count unless the
+test server is swapped for something sturdier.
